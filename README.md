@@ -203,11 +203,11 @@ command.build.project.snapshot=${command.build.project.version}
 * **Solution**: Skip `setup:static-content:deploy` first time you deploy the new template. After that, future
 deployments will always work
 
-```
-mg2-release -DkeepMaintenanceSet -DskipStaticContentDeploy
-<magento_bin> setup:static-content:deploy <languages>
-mg2-release maintenance:unset
-```
+    ```
+    mg2-release -DkeepMaintenanceSet -DskipStaticContentDeploy
+    <magento_bin> setup:static-content:deploy <languages>
+    mg2-release maintenance:unset
+    ```
 
 
 ## Prerequisites
