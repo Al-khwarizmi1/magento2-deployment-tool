@@ -30,7 +30,8 @@
 
     <target name="magento:static-content:deploy"
             description="Deploys static asset files"
-            hidden="true">
+            hidden="true"
+            unless="skipStaticContentDeploy">
 
         <property name="command.magento.static-content"
                   value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:static-content:deploy ${static-content.languages} ${command.static-content.deploy.options}"/>
