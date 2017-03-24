@@ -5,7 +5,8 @@
     <target name="database:backup:create"
             depends="util:live:dir:properties"
             unless="skipDatabaseBackup"
-            hidden="true">
+            hidden="true"
+            logskipped="true">
         <if>
             <istrue value="${live.magento.dir.exists}"/>
             <then>

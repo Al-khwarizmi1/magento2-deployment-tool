@@ -34,7 +34,8 @@
 
     <target name="cache:opcache:restart"
             unless="skipRestartOpcache"
-            hidden="true">
+            hidden="true"
+            logskipped="true">
         <if>
             <istrue value="${opcache.enabled}"/>
             <then>
@@ -49,7 +50,8 @@
 
     <target name="cache:varnish:restart"
             unless="skipRestartVarnish"
-            hidden="true">
+            hidden="true"
+            logskipped="true">
         <if>
             <istrue value="${varnish.enabled}"/>
             <then>

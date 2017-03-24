@@ -31,7 +31,8 @@
     <target name="magento:static-content:deploy"
             description="Deploys static asset files"
             hidden="true"
-            unless="skipStaticContentDeploy">
+            unless="skipStaticContentDeploy"
+            logskipped="true">
 
         <property name="command.magento.static-content"
                   value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:static-content:deploy ${static-content.languages} ${command.static-content.deploy.options}"/>
@@ -45,7 +46,8 @@
 
     <target name="magento:set:permissions"
             unless="skipSetPermissions"
-            hidden="true">
+            hidden="true"
+            logskipped="true">
 
         <property name="command.set.permissions" value="cd ${release.target}/${magento.dir} &amp;&amp; ${command.permissions}"/>
         <echo message="${command.set.permissions}"/>
