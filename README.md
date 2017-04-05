@@ -205,7 +205,7 @@ deployments will always work
 
     ```
     mg2-release -DkeepMaintenanceSet -DskipStaticContentDeploy
-    <magento_bin> setup:static-content:deploy <languages>
+    <latest_release>/<magento_bin> setup:static-content:deploy <language1> <language2> ...
     mg2-release maintenance:unset
     ```
 
