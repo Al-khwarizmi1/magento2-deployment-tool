@@ -198,7 +198,9 @@ command.build.project.snapshot=${command.build.project.version}
 
 #### Static deploy error when setting a new template
 
-* **Problem**: [LogicException] Unable to load theme by specified key: 'Template'
+* **Problems**:
+    * [LogicException] Unable to load theme by specified key: 'Template'
+    * @variable is undefined in file
 * **Reason**: If a new template is set, running `setup:upgrade` is required before executing `setup:static-content:deploy`
 * **Solution**: Skip `setup:static-content:deploy` first time you deploy the new template. After that, future
 deployments will always work
