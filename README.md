@@ -123,7 +123,7 @@ Tool must be executed at the path where the the project will be deployed.
 
 ### Properties
 
-You can customise all properities according to your needs:
+You can customise all properties according to your needs:
 
 * Properties added in `deployment-settings/project.properties` have the highest priority and will overwrite default ones
 * You can check all default properties that can be customised on:
