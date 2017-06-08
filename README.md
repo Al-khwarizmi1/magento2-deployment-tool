@@ -206,9 +206,9 @@ command.build.project.snapshot=${command.build.project.version}
 deployments will always work
 
     ```
-    mg2-release -DkeepMaintenanceSet -DskipStaticContentDeploy
+    mg2-deployer release -DkeepMaintenanceSet -DskipStaticContentDeploy
     <latest_release>/<magento_bin> setup:static-content:deploy <language1> <language2> ...
-    mg2-release maintenance:unset
+    mg2-deployer maintenance:unset
     ```
 
 
