@@ -85,18 +85,16 @@
             description="Checks that output from command does not contain errors"
             hidden="true">
         <if>
-            <and>
-                <not>
-                    <contains string="${check.output}" substring="errors: 0" casesensitive="false"/>
-                </not>
-                <or>
+            <or>
+                <and>
                     <contains string="${check.output}" substring="error" casesensitive="false"/>
-                    <contains string="${check.output}" substring="denied" casesensitive="false"/>
-                    <contains string="${check.output}" substring="failed" casesensitive="false"/>
-                    <contains string="${check.output}" substring="Exception" casesensitive="false"/>
-                    <contains string="${check.output}" substring="is undefined in file" casesensitive="false"/>
-                </or>
-            </and>
+                    <not><contains string="${check.output}" substring="errors: 0" casesensitive="false"/></not>
+                </and>
+                <contains string="${check.output}" substring="denied" casesensitive="false"/>
+                <contains string="${check.output}" substring="failed" casesensitive="false"/>
+                <contains string="${check.output}" substring="Exception" casesensitive="false"/>
+                <contains string="${check.output}" substring="is undefined in file" casesensitive="false"/>
+            </or>
             <then>
                 <echo message="${check.output}" level="error"/>
                 <fail message="Command failed" />
