@@ -1,6 +1,7 @@
 {
   "name": "staempfli/magento2-deployment-tool",
   "description": "Staempfli AG Magento2 Deployment Tool",
+  "keywords": ["magento2", "tool", "deployment", "deployer"],
   "license": [
     "GPL-3.0"
   ],
