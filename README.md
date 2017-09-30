@@ -192,6 +192,30 @@ command.build.project.snapshot=${command.build.project.version}
 
 ## Troubleshooting
 
+#### Js translations missing (magento versions >=2.1.3 <2.2.1)
+
+*  **Problem**: Known Magento issue when executing `setup:static-content:deploy` for several languages.
+
+* **Github Issues**:
+	* [7862](https://github.com/magento/magento2/issues/7862)
+	* [10673](https://github.com/magento/magento2/issues/10673)
+
+* **Solution**: Until that gets fixed in `2.2.1`, the only workaround is to execute `setup:static-content:deploy` individually for each language. To run that automatically with `mg2-deployer release`, you need to edit the following: 
+
+	1. `vim deployment-settings/project.properties`
+	2. Set only 1 language on `static-content.languages`:
+		* `static-content.languages=en_US`
+		 
+	3. Add the rest of your languages on `command.static-content.deploy.options` with following command for each language:
+		* `&& ${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:static-content:deploy de_CH`
+
+	4. The result will be something like in this example
+	
+		```
+		static-content.languages=en_US
+		command.static-content.deploy.options=--exclude-theme Magento/luma --exclude-theme Magento/blank && ${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:static-content:deploy de_CH --exclude-theme Magento/luma --exclude-theme Magento/blank && ${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:static-content:deploy fr_FR --exclude-theme Magento/luma --exclude-theme Magento/blank
+		```
+
 #### Compilation error
 
 * **Solution**: Increase php `memory_limit` configuration to 728M o 1024M
@@ -202,14 +226,13 @@ command.build.project.snapshot=${command.build.project.version}
     * [LogicException] Unable to load theme by specified key: 'Template'
     * @variable is undefined in file
 * **Reason**: If a new template is set, running `setup:upgrade` is required before executing `setup:static-content:deploy`
-* **Solution**: Skip `setup:static-content:deploy` first time you deploy the new template. After that, future
-deployments will always work
+* **Solution**: Skip `setup:static-content:deploy` first time you deploy the new template. Do a release following these steps:
 
-    ```
-    mg2-deployer release -DkeepMaintenanceSet -DskipStaticContentDeploy
-    <latest_release>/<magento_bin> setup:static-content:deploy <language1> <language2> ...
-    mg2-deployer maintenance:unset
-    ```
+    1. `mg2-deployer release -DkeepMaintenanceSet -DskipStaticContentDeploy`
+    2. `<latest_release>/<magento_bin> setup:static-content:deploy <language1> <language2> ...`
+    3. `mg2-deployer maintenance:unset`
+    
+    After that, future deployments will work without issues
 
 
 ## Prerequisites
