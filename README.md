@@ -209,7 +209,7 @@ command.build.project.snapshot=${command.build.project.version}
 	3. Add the rest of your languages on `command.static-content.deploy.options` with following command for each language:
 		* `&& ${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:static-content:deploy de_CH`
 
-	4. The result will be something like in this example
+	4. The result will be something like in this example:
 	
 		```
 		static-content.languages=en_US
