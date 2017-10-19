@@ -7,6 +7,7 @@
         <if>
             <istrue value="${magento.generate.files}"/>
             <then>
+                <executeTarget target="magento:module:disable"/>
                 <executeTarget target="magento:di:compile"/>
                 <executeTarget target="magento:static-content:deploy"/>
             </then>
@@ -14,6 +15,27 @@
                 <echo message="Magento generation files skipped."/>
             </else>
         </if>
+    </target>
+
+    <target name="magento:module:disable"
+            hidden="true">
+
+        <if>
+            <equals arg1="${module.disable.list}" arg2="" />
+            <then>
+                <echo message="No modules to disable"/>
+            </then>
+            <else>
+                <property name="command.magento.module.disable" value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} module:disable ${module.disable.list}"/>
+                <echo message="${command.magento.module.disable}"/>
+                <exec command="${command.magento.module.disable}" outputProperty="command.magento.module.disable.output" checkreturn="false" logoutput="false"/>
+
+                <phingcall target="util:check:output">
+                    <property name="check.output" value="${command.magento.module.disable.output}" override="true"/>
+                </phingcall>
+            </else>
+        </if>
+
     </target>
 
     <target name="magento:di:compile"
