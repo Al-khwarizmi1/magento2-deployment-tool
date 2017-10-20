@@ -121,9 +121,8 @@
         <property name="command.setup.install" value="${bin.n98-magerun2} install
             --installationFolder=${release.target}/${magento.dir}
             --noDownload
-            --forceUseDb=true
+            --forceUseDb
             --installSampleData=no
-            --useDefaultConfigParams=no
             --replaceHtaccessFile=n
             --useDefaultConfigParams=yes"
         />
