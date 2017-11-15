@@ -76,6 +76,29 @@
         <exec command="${command.set.permissions}" checkreturn="true" logoutput="true"/>
     </target>
 
+    <target name="magento:setup:db:status"
+            hidden="true">
+
+        <property name="command.magento.db.status" value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:db:status"/>
+        <echo message="${command.magento.db.status}"/>
+        <exec command="${command.magento.db.status}" returnProperty="magento.db.status.return" checkreturn="false" logoutput="true"/>
+        <if>
+            <equals arg1="${magento.db.status.return}" arg2="2"/>
+            <then>
+                <property name="magento.setup.upgrade.needed" value="true"/>
+            </then>
+            <elseif>
+                <equals arg1="${magento.db.status.return}" arg2="0"/>
+                <then>
+                    <property name="magento.setup.upgrade.needed" value="false"/>
+                </then>
+            </elseif>
+            <else>
+                <fail message="Error checking if executing setup:upgrade is needed" />
+            </else>
+        </if>
+    </target>
+
     <target name="magento:setup:upgrade"
             hidden="true">
 
@@ -86,6 +109,16 @@
         <phingcall target="util:check:output">
             <property name="check.output" value="${command.magento.upgrade.output}" override="true"/>
         </phingcall>
+    </target>
+
+    <target name="magento:cron:install"
+            hidden="true"
+            unless="skipCronInstall"
+            logskipped="true">
+
+        <property name="command.magento.cron" value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} cron:install --force"/>
+        <echo message="${command.magento.cron}"/>
+        <exec command="${command.magento.cron}" checkreturn="true" logoutput="true"/>
     </target>
 
 </project>

@@ -2,6 +2,22 @@
 
 <project name="Database" basedir=".">
 
+    <target name="database:upgrade"
+            depends="magento:setup:db:status"
+            hidden="true">
+        <if>
+            <istrue value="${magento.setup.upgrade.needed}" />
+            <then>
+                <executeTarget target="maintenance:set"/>
+                <executeTarget target="database:backup:create"/>
+                <executeTarget target="magento:setup:upgrade"/>
+            </then>
+            <else>
+                <echo message="Database upgrade is not needed"/>
+            </else>
+        </if>
+    </target>
+
     <target name="database:backup:create"
             depends="util:live:dir:properties"
             unless="skipDatabaseBackup"

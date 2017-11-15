@@ -13,8 +13,7 @@
     <target name="util:releases:cleanup"
             description="Remove old releases that are no longer needed"
             hidden="true">
-        <property name="command.release.remove.downloads"
-                  value="rm -rf ${application.startdir}/${downloads.dir}/*" />
+        <property name="command.release.remove.downloads" value="rm -rf ${application.startdir}/${downloads.dir}/*" />
         <echo message="${command.release.remove.downloads}"/>
         <exec command="${command.release.remove.downloads}" logoutput="true" checkreturn="true"/>
         <if>

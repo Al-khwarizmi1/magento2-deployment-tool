@@ -23,6 +23,9 @@
         <if>
             <not><equals arg1="${command.get.project}" arg2=""/></not>
             <then>
+                <property name="command.release.remove.downloads" value="rm -rf ${application.startdir}/${downloads.dir}/*" />
+                <echo message="${command.release.remove.downloads}"/>
+                <exec command="${command.release.remove.downloads}" logoutput="true" checkreturn="true"/>
                 <echo message="${command.get.project}" />
                 <exec command="${command.get.project}" logoutput="true" checkreturn="true"/>
             </then>
@@ -67,7 +70,7 @@
             <then>
                 <property name="command.get.project" value="${command.get.project.artifact}" override="true"/>
                 <property name="command.build.project" value="${command.build.project.artifact}" override="true"/>
-                <property name="magento.generate.files" value="0" override="false"/>
+                <property name="magento.generate.files" value="0" override="true"/>
             </then>
         </if>
         <property name="downloads.target" value="${application.startdir}/${downloads.dir}/${release.version}"/>
@@ -86,7 +89,6 @@
                 <delete dir="${release.target}" failonerror="true"/>
             </then>
         </if>
-        <mkdir dir="${release.target}"/>
     </target>
 
     <target name="release:delete:confirm"
@@ -117,10 +119,24 @@
         <exec command="${command.release.scripts.after}" logoutput="true" />
     </target>
 
+    <target name="release:switch:finish"
+            hidden="true">
+        <if>
+            <and>
+                <isset property="${finishWithMaintenance}"/>
+            </and>
+            <then>
+                <executeTarget target="maintenance:set"/>
+            </then>
+            <else>
+                <executeTarget target="release:live:replace"/>
+            </else>
+        </if>
+    </target>
+
     <target name="release:live:replace"
             depends="util:properties:read"
-            description="Set a specific release as live version"
-            unless="keepMaintenanceSet">
+            description="Set a specific release as live version">
         <if>
             <not>
                 <isset property="release.target"/>

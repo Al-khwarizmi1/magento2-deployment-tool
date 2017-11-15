@@ -56,17 +56,16 @@
     </target>
 
     <target name="release"
-            description="Release new project version [release.version|keepMaintenanceSet|skipDatabaseBackup|skipSetPermissions]"
+            description="Release new project version [release.version|skipCronInstall|skipDatabaseBackup|skipSetPermissions|finishWithMaintenance]"
             depends="util:properties:read,
             release:validate:before,
             release:build:project,
             symlinks:set,
             magento:generate:files,
             magento:set:permissions,
-            maintenance:set,
-            database:backup:create,
-            magento:setup:upgrade,
-            release:live:replace,
+            database:upgrade,
+            magento:cron:install,
+            release:switch:finish,
             release:scripts:after,
             util:releases:cleanup">
 

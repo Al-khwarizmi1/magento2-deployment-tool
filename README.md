@@ -110,7 +110,7 @@ Tool must be executed at the path where the the project will be deployed.
 
 	Main targets:
 	------------
- 	release               Options -> [keepMaintenanceSet|skipDatabaseBackup]
+ 	release               Options -> [skipCronInstall|skipDatabaseBackup|finishWithMaintenance]
  	maintenance:set       Set maintenance window
  	maintenance:unset     Replace maintenance window with a specific released version
  	release:live:replace  Set a specific release as live version
@@ -164,13 +164,14 @@ If you select `artifact` build type for your deployments, these are the default 
 
 ```
 command.get.project.artifact=
-command.build.project.artifact=tar -xzf ${downloads.target}.tar.gz -C ${release.target}
+command.build.project.artifact=mkdir -p ${release.target} && tar -xzf ${downloads.target}.tar.gz -C ${release.target}
 ```
 
 This configuration expects the `artifact` to be available inside `tmp-downloads` with `.tar.gz` extension.
 
 If you need to get the `artifact` from a different server, you can modify the property like that:
-``
+
+```
 command.get.project.version=scp <user>@<server_domain>:<path>${release.version}.tar.gz ${downloads.target}.tar.gz
 ```
 
@@ -228,7 +229,7 @@ command.get.project.version=scp <user>@<server_domain>:<path>${release.version}.
 * **Reason**: If a new template is set, running `setup:upgrade` is required before executing `setup:static-content:deploy`
 * **Solution**: Skip `setup:static-content:deploy` first time you deploy the new template. Do a release following these steps:
 
-    1. `mg2-deployer release -DkeepMaintenanceSet -DskipStaticContentDeploy`
+    1. `mg2-deployer release -DfinishWithMaintenance -DskipStaticContentDeploy`
     2. `<latest_release>/<magento_bin> setup:static-content:deploy <language1> <language2> ...`
     3. `mg2-deployer maintenance:unset`
     
