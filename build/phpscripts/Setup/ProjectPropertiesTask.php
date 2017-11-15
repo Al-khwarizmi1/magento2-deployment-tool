@@ -19,10 +19,16 @@ class ProjectPropertiesTask extends Task
     protected $projectProperties = [
         "git.repo.url" => ['description' => 'Project git url to clone from'],
         "live.symlink" => ['description' => 'Target dir where live release will be symlinked'],
-        "magento.dir" => ['description' => 'Magento dir into the project root. Set "." if magento is installed on project root'],
+        "magento.dir" => ['description' =>
+            'Magento dir into the project root. Set "." if magento is installed on project root'],
         "opcache.enabled" => ['valid_values' => [1, 0]],
         "varnish.enabled" => ['valid_values' =>[1, 0]],
-        "static-content.languages" => ['description' => 'Space-separated list of language codes to deploy']
+        "static-content.languages" => ['description' => 'Space-separated list of language codes to deploy'],
+        "build.project.type" => [
+            'description' =>
+                'Select "artifact" if you are deploying an archive already built with all files generated',
+            'valid_values' => ['default', 'artifact']
+        ],
     ];
 
     public function main()

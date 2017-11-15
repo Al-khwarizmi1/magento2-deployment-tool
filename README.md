@@ -159,34 +159,34 @@ cp deployment-settings/scripts/release-after.sh.dist deployment-settings/scripts
 vim deployment-settings/scripts/release-after.sh
 ```
 
-## Advanced Configuration (for CI/CD env)
-If you are smart, you probably have a CI/CD environment where you already build the project and create a `tar` archive. Then you probably want to skip Magento generation files (assets & compilation) during the deployment.
-
-You can do that by setting this configuration in `deployment-settings/project.properties`:
+## Build project from Artifact
+If you select `artifact` build type for your deployments, these are the default properties to get and build the project files:
 
 ```
-magento.generate.files=0
-command.get.project.version=scp <user>@<server_domain>:<path>${release.version}.tar.gz ${downloads.target}.tar.gz
-command.build.project.version=tar -xzf ${downloads.target}.tar.gz -C ${release.target}
+command.get.project.artifact=""
+command.build.project.artifact=tar -xzf ${downloads.target}.tar.gz -C ${release.target}
+```
 
-command.get.project.snapshot=${command.get.project.version}
-command.build.project.snapshot=${command.build.project.version}
+This configuration expects the `artifact` to be available inside `tmp-downloads` with `.tar.gz` extension.
+
+If you need to get the `artifact` from a different server, you can modify the property like that:
+``
+command.get.project.version=scp <user>@<server_domain>:<path>${release.version}.tar.gz ${downloads.target}.tar.gz
 ```
 
 **NOTE** `${}` variables are automatically replaced during deployment.
-
 
 ## Tips:
 
 ### Speed up deployment process on dev-servers:
 
-* Release most recent version of develop branch `-Drelease.version=snapshot`
+* Release most recent version of develop branch `-Drelease.version=develop`
 * Skip database backup step `-DskipDatabaseBackup`
 * You can even set these options by default on `deployment-settings/project.properties`:
 
     ```
     vim deployment-settings/project.properties
-    release.version=snapshot
+    release.version=develop
     skipDatabaseBackup=1
     ```
 

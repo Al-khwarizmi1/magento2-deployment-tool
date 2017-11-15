@@ -59,7 +59,6 @@
             description="Release new project version [release.version|keepMaintenanceSet|skipDatabaseBackup|skipSetPermissions]"
             depends="util:properties:read,
             release:validate:before,
-            release:get:project,
             release:build:project,
             symlinks:set,
             magento:generate:files,

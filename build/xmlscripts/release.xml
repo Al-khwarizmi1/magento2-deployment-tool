@@ -16,13 +16,24 @@
         </if>
     </target>
 
-    <target name="release:get:project"
+    <target name="release:build:project"
             depends="release:get:properties,
             release:prepare:folders"
             hidden="true">
+        <if>
+            <not><equals arg1="${command.get.project}" arg2=""/></not>
+            <then>
+                <echo message="${command.get.project}" />
+                <exec command="${command.get.project}" logoutput="true" checkreturn="true"/>
+            </then>
+        </if>
 
-        <echo message="${command.get.project}" />
-        <exec command="${command.get.project}" logoutput="true" checkreturn="true"/>
+        <echo message="${command.build.project}" />
+        <exec command="${command.build.project}" outputProperty="command.release.build.output"
+              logoutput="false" checkreturn="true"/>
+        <phingcall target="util:check:output">
+            <property name="check.output" value="${command.release.build.output}" override="true" />
+        </phingcall>
     </target>
 
     <target name="release:get:properties"
@@ -46,21 +57,20 @@
             </else>
         </if>
         <if>
-            <or>
-                <contains string="${release.version}" substring="SNAPSHOT" casesensitive="false"/>
-                <contains string="${release.version}" substring="develop" casesensitive="false"/>
-            </or>
+            <contains string="${release.version}" substring="develop" casesensitive="false"/>
             <then>
                 <property name="release.filename" value="${release.filename}-${release.timestamp}" override="true"/>
-                <property name="command.get.project" value="${command.get.project.snapshot}"/>
-                <property name="command.build.project" value="${command.build.project.snapshot}"/>
             </then>
-            <else>
-                <property name="command.get.project" value="${command.get.project.version}" override="true"/>
-                <property name="command.build.project" value="${command.build.project.version}" override="true"/>
-            </else>
         </if>
-        <property name="downloads.target" value="${application.startdir}/${downloads.dir}/${release.filename}"/>
+        <if>
+            <equals arg1="${build.project.type}" arg2="artifact"/>
+            <then>
+                <property name="command.get.project" value="${command.get.project.artifact}" override="true"/>
+                <property name="command.build.project" value="${command.build.project.artifact}" override="true"/>
+                <property name="magento.generate.files" value="0" override="false"/>
+            </then>
+        </if>
+        <property name="downloads.target" value="${application.startdir}/${downloads.dir}/${release.version}"/>
         <property name="release.target" value="${application.startdir}/${releases.dir}/${release.filename}"/>
     </target>
 
@@ -76,10 +86,7 @@
                 <delete dir="${release.target}" failonerror="true"/>
             </then>
         </if>
-        <property name="command.release.remove.downloads"
-                  value="rm -rf ${application.startdir}/${downloads.dir}/*" />
-        <echo message="${command.release.remove.downloads}"/>
-        <exec command="${command.release.remove.downloads}" logoutput="true" checkreturn="true"/>
+        <mkdir dir="${release.target}"/>
     </target>
 
     <target name="release:delete:confirm"
@@ -101,18 +108,6 @@
                 <fail message="${release.target} already exists and cannot be overwritten"/>
             </then>
         </if>
-    </target>
-
-    <target name="release:build:project"
-            hidden="true">
-        <mkdir dir="${release.target}"/>
-        <echo message="${command.build.project}" />
-        <exec command="${command.build.project}"
-              outputProperty="command.release.build.output"
-              logoutput="false" checkreturn="true"/>
-        <phingcall target="util:check:output">
-            <property name="check.output" value="${command.release.build.output}" override="true" />
-        </phingcall>
     </target>
 
     <target name="release:scripts:after"
