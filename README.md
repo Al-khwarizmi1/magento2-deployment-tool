@@ -163,7 +163,7 @@ vim deployment-settings/scripts/release-after.sh
 If you select `artifact` build type for your deployments, these are the default properties to get and build the project files:
 
 ```
-command.get.project.artifact=""
+command.get.project.artifact=
 command.build.project.artifact=tar -xzf ${downloads.target}.tar.gz -C ${release.target}
 ```
 
