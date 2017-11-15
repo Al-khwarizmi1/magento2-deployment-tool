@@ -69,7 +69,6 @@
     <target name="setup:magento:shared:data"
             depends="setup:magento:confirm,
             setup:release:params,
-            release:get:project,
             release:build:project,
             setup:magento:install"
             hidden="true">
@@ -114,6 +113,7 @@
             hidden="true">
         <property name="release.version" value="master"/>
         <property name="release.overwrite" value="y"/>
+        <property name="build.project.type" value="default" override="true" userProperty="true"/>
     </target>
 
     <target name="setup:magento:install"
