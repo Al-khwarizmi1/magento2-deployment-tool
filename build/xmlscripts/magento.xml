@@ -76,7 +76,7 @@
         <exec command="${command.set.permissions}" checkreturn="true" logoutput="true"/>
     </target>
 
-    <target name="magento:setup:db:status"
+    <target name="magento:db:status"
             hidden="true">
 
         <property name="command.magento.db.status" value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} setup:db:status"/>
@@ -88,14 +88,13 @@
                 <property name="magento.setup.upgrade.needed" value="true"/>
             </then>
             <elseif>
-                <equals arg1="${magento.db.status.return}" arg2="0"/>
+                <not>
+                    <equals arg1="${magento.db.status.return}" arg2="0"/>
+                </not>
                 <then>
-                    <property name="magento.setup.upgrade.needed" value="false"/>
+                    <fail message="Error checking if executing setup:upgrade is needed"/>
                 </then>
             </elseif>
-            <else>
-                <fail message="Error checking if executing setup:upgrade is needed" />
-            </else>
         </if>
     </target>
 
@@ -109,6 +108,33 @@
         <phingcall target="util:check:output">
             <property name="check.output" value="${command.magento.upgrade.output}" override="true"/>
         </phingcall>
+    </target>
+
+    <target name="magento:config:status"
+            hidden="true">
+
+        <property name="command.magento.config.status" value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} config:set workaround/config/status 1"/>
+        <echo message="${command.magento.config.status}"/>
+        <exec command="${command.magento.config.status}" outputProperty="command.magento.config.status.output" checkreturn="false" logoutput="true"/>
+        <if>
+            <equals arg1="${command.magento.config.status.output}"
+                    arg2="This command is unavailable right now. To continue working with it please run app:config:import or setup:upgrade command before."/>
+            <then>
+                <property name="magento.config.import.needed" value="true"/>
+                <echo message="Config files have changed. You need to execute app:config:import"/>
+            </then>
+            <else>
+                <echo message="Configuration files are up to date."/>
+            </else>
+        </if>
+    </target>
+
+    <target name="magento:config:import"
+            hidden="true">
+
+        <property name="command.magento.config.import" value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} app:config:import"/>
+        <echo message="${command.magento.config.import}"/>
+        <exec command="${command.magento.config.import}" checkreturn="true" logoutput="true"/>
     </target>
 
     <target name="magento:cron:install"

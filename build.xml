@@ -63,7 +63,7 @@
             symlinks:set,
             magento:generate:files,
             magento:set:permissions,
-            database:upgrade,
+            database:update,
             magento:cron:install,
             release:switch:finish,
             release:scripts:after,

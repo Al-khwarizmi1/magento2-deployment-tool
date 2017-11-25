@@ -2,18 +2,26 @@
 
 <project name="Database" basedir=".">
 
-    <target name="database:upgrade"
-            depends="magento:setup:db:status"
+    <target name="database:update"
+            depends="magento:db:status,
+            magento:config:status"
             hidden="true">
         <if>
-            <istrue value="${magento.setup.upgrade.needed}" />
+            <isset property="magento.setup.upgrade.needed"/>
             <then>
                 <executeTarget target="maintenance:set"/>
                 <executeTarget target="database:backup:create"/>
                 <executeTarget target="magento:setup:upgrade"/>
             </then>
+            <elseif>
+                <isset property="magento.config.import.needed" />
+                <then>
+                    <executeTarget target="maintenance:set"/>
+                    <executeTarget target="magento:config:import"/>
+                </then>
+            </elseif>
             <else>
-                <echo message="Database upgrade is not needed"/>
+                <echo message="Database and config updates are not needed"/>
             </else>
         </if>
     </target>
