@@ -120,14 +120,24 @@ Tool must be executed at the path where the the project will be deployed.
 
 ## Custom Configuration
 
-
 ### Properties
 
-You can customise all properties according to your needs:
+You can customise properties according to your needs:
 
-* Properties added in `deployment-settings/project.properties` have the highest priority and will overwrite default ones
-* You can check all default properties that can be customised on:
-	* [build/config/default.properties](build/config/default.properties)
+**On the Server:**
+
+* `deployment-settings/project.properties`
+* Properties added in that file, overwrite default ones
+
+**On the Project:**
+
+* `{{PROJECT_ROOT}}/config/project.properties`
+* If you want to share properties within your project, you can add them into that file.
+* Properties added here have the highest priority and will overwrite `deployment-settings/project.properties` and default ones.
+
+You can check all default properties that can be customised on:
+
+* [build/config/default.properties](build/config/default.properties)
 
 ### Maintenance Window
 

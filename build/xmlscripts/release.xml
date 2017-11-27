@@ -75,6 +75,7 @@
         </if>
         <property name="downloads.target" value="${application.startdir}/${downloads.dir}/${release.version}"/>
         <property name="release.target" value="${application.startdir}/${releases.dir}/${release.filename}"/>
+        <property file="${release.target}/config/project.properties" override="true" />
     </target>
 
     <target name="release:prepare:folders"
