@@ -62,7 +62,6 @@
             release:build:project,
             symlinks:set,
             magento:generate:files,
-            magento:set:permissions,
             database:update,
             magento:cron:install,
             release:switch:finish,

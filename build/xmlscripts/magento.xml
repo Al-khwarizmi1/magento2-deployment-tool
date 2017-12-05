@@ -10,6 +10,7 @@
                 <executeTarget target="magento:module:disable"/>
                 <executeTarget target="magento:di:compile"/>
                 <executeTarget target="magento:static-content:deploy"/>
+                <executeTarget target="magento:set:permissions"/>
             </then>
             <else>
                 <echo message="Magento generation files skipped."/>
@@ -19,7 +20,6 @@
 
     <target name="magento:module:disable"
             hidden="true">
-
         <if>
             <equals arg1="${module.disable.list}" arg2="" />
             <then>
@@ -35,7 +35,6 @@
                 </phingcall>
             </else>
         </if>
-
     </target>
 
     <target name="magento:di:compile"
