@@ -22,23 +22,48 @@ class ProjectPropertiesTask extends Task
         "magento.dir" => ['description' =>
             'Magento dir into the project root. Set "." if magento is installed on project root'],
         "opcache.enabled" => ['valid_values' => [1, 0]],
-        "varnish.enabled" => ['valid_values' =>[1, 0]],
-        "static-content.languages" => ['description' => 'Space-separated list of language codes to deploy'],
+        "varnish.enabled" => ['valid_values' => [1, 0]],
         "build.project.type" => [
             'description' =>
                 'Select "artifact" if you are deploying an archive already built with all files generated',
             'valid_values' => ['default', 'artifact']
         ],
+        "static-content.languages" => [
+            'description' => 'Space-separated list of language codes to deploy',
+            'depends' => ['build.project.type' => 'default'],
+        ],
     ];
 
     public function main()
     {
+        $properties = [];
         $this->log("Input project properties");
         foreach ($this->projectProperties as $property => $propertyData) {
+            if ($this->skipProperty($propertyData)) {
+                continue;
+            }
             $inputValue = $this->promptProperty($property, $propertyData);
             $this->project->setUserProperty($property, $inputValue);
+            $properties[] = $property;
         }
-        $this->exportProjectProperties();
+        $this->exportProjectProperties($properties);
+    }
+
+    /**
+     * @param array $propertyData
+     * @return bool
+     */
+    private function skipProperty(array $propertyData)
+    {
+        if (isset($propertyData['depends'])) {
+            foreach ($propertyData['depends'] as $dependProperty => $dependValue) {
+                $value = $this->project->getProperty($dependProperty);
+                if ($value != $dependValue) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -112,12 +137,14 @@ class ProjectPropertiesTask extends Task
         return false;
     }
 
-    protected function exportProjectProperties()
+    /**
+     * @param array $properties
+     */
+    protected function exportProjectProperties(array $properties)
     {
         $propertiesText = "";
-        $propertiesNames = array_keys($this->projectProperties);
-        foreach ($propertiesNames as $propertyName) {
-            $propertiesText .= $propertyName . "=" . $this->project->getProperty($propertyName) . PHP_EOL;
+        foreach ($properties as $property) {
+            $propertiesText .= $property . "=" . $this->project->getProperty($property) . PHP_EOL;
         }
         $projectPropertiesFile = sprintf("%s/deployment-settings/project.properties", $this->project->getProperty("application.startdir"));
         $this->putContentInFile($propertiesText, $projectPropertiesFile);
