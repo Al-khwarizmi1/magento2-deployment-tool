@@ -2,17 +2,18 @@
 
 Deployment tool for Magento 2 created with [PHing](https://www.phing.info/). This tool builds a new project version into a separate directory and switches live version at the end.
 
+**Zero Downtime deployments using `Magento >= 2.2` features**
+
 Workflow:
 
 ```
 1. Get new Project version (i.e git clone, curl, ...)
 2. Build Project (i.e composer install, untar, ...)
 3. Symlinks to shared content in server
-4. Generate Magento files (Skipped if deploying `.tar`)
-5. Set folder/files permissions
-6. Set Maintenance
-7. Database backup
-8. Magento setup:upgrade
+4. Generate Magento files and permissions (Skipped if `build.project.type=artifact`)
+6. Set Maintenance (if needed)
+7. Database backup (if needed)
+8. Magento setup:upgrade (if needed)
 9. Replace live version with new one
 10. Unset maintenance
 11. Clean up old releases and backups
@@ -39,7 +40,7 @@ Global installation using composer is required.
 0. Composer require:
 
 	```
-	composer global require "staempfli/magento2-deployment-tool":"dev-master"
+	composer global require "staempfli/magento2-deployment-tool":"~2.0"
 	```
 
 0. Check you global composer `bin-dir` configuration:
@@ -170,7 +171,7 @@ vim deployment-settings/scripts/release-after.sh
 ```
 
 ## Build project from Artifact
-If you select `artifact` build type for your deployments, these are the default properties to get and build the project files:
+If you select `build.project.type=artifact`, these are the default properties to get and build the project files:
 
 ```
 command.get.project.artifact=
@@ -231,7 +232,7 @@ command.get.project.version=scp <user>@<server_domain>:<path>${release.version}.
 
 * **Solution**: Increase php `memory_limit` configuration to 728M o 1024M
 
-#### Static deploy error when setting a new template
+#### Static deploy error when setting a new template (if config propagation is not used)
 
 * **Problems**:
     * [LogicException] Unable to load theme by specified key: 'Template'
@@ -249,7 +250,11 @@ command.get.project.version=scp <user>@<server_domain>:<path>${release.version}.
 ## Prerequisites
 
 - PHP >= 7.0.8
-- MAGENTO >= 2.1.1
+- MAGENTO >= 2.2.1 (for previous Magento versions, use `staempfli/magento2-deployment-tool:^1.2`)
+
+## ChangeLog
+
+[CHANGELOG.md](CHANGELOG.md)
 
 ## Developers
 

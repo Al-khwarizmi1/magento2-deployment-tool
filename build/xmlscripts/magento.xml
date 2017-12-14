@@ -28,11 +28,7 @@
             <else>
                 <property name="command.magento.module.disable" value="${bin.n98-magerun2} --root-dir=${release.target}/${magento.dir} module:disable ${module.disable.list}"/>
                 <echo message="${command.magento.module.disable}"/>
-                <exec command="${command.magento.module.disable}" outputProperty="command.magento.module.disable.output" checkreturn="false" logoutput="false"/>
-
-                <phingcall target="util:check:output">
-                    <property name="check.output" value="${command.magento.module.disable.output}" override="true"/>
-                </phingcall>
+                <exec command="${command.magento.module.disable}" outputProperty="command.magento.module.disable.output" checkreturn="true" logoutput="true"/>
             </else>
         </if>
     </target>
