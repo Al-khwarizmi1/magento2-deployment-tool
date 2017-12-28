@@ -94,6 +94,7 @@
                 <contains string="${check.output}" substring="failed" casesensitive="false"/>
                 <contains string="${check.output}" substring="Exception" casesensitive="false"/>
                 <contains string="${check.output}" substring="is undefined in file" casesensitive="false"/>
+                <contains string="${check.output}" substring="Errors during compilation" casesensitive="false"/>
             </or>
             <then>
                 <echo message="${check.output}" level="error"/>
