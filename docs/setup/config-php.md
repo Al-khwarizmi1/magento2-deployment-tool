@@ -16,12 +16,12 @@ Best practise to keep the Magento2 `config.php` file in your project repo is to 
 
 	```
 	"scripts": {
-       "replaceConfigPHP": "cd <magento_dir>/app/etc && ln -sf ../../../symlinks/<magento_dir>/app/etc/config.php"
-    "post-install-cmd": [
-      "@replaceConfigPHP"
-    ],
-    "post-update-cmd": [
-      "@replaceConfigPHP"
-    ]
-  }
+        "replaceConfigPHP": "cd <magento_dir>/app/etc && ln -sf ../../../symlinks/<magento_dir>/app/etc/config.php"
+        "post-install-cmd": [
+            "@replaceConfigPHP"
+        ],
+        "post-update-cmd": [
+            "@replaceConfigPHP"
+        ]
+    }
 	```
