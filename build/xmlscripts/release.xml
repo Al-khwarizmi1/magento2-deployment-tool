@@ -60,7 +60,7 @@
             </else>
         </if>
         <if>
-            <contains string="${release.version}" substring="develop" casesensitive="false"/>
+            <contains string="${release.version}" substring="${snapshot.branch}" casesensitive="false"/>
             <then>
                 <property name="release.filename" value="${release.filename}-${release.timestamp}" override="true"/>
             </then>
