@@ -1,3 +1,14 @@
+# DEPRECATED
+
+This tool has been deprecated in favor of [magento2-deployer-plus](https://github.com/jalogut/magento2-deployer-plus). Although this repository will be kept and the tool works up to Magento 2.2.3, we will no longer add updates. Further developments will be done on the new tool [magento2-deployer-plus](https://github.com/jalogut/magento2-deployer-plus). 
+
+If you were using this tool, we encourage you to migrate to the new one. New tool is an improved version of this one using deployer. New tool supports Magento versions `<= 2.1`. 
+
+You can find all information about the new tool in his repository:
+
+* [https://github.com/jalogut/magento2-deployer-plus](https://github.com/jalogut/magento2-deployer-plus)
+
+
 # Magento 2 Deployment tool
 
 Deployment tool for Magento 2 created with [PHing](https://www.phing.info/). This tool builds a new project version into a separate directory and switches live version at the end.
